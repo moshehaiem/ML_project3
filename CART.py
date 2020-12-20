@@ -2,8 +2,59 @@ import numpy as np
 from collections import Counter
 import sys
 
+# Below is a class that implement the binary tree search. 
+# It shows how recursion is done in a typical binary tree structure. 
+# You may apply similar ideas (recursion) in CART as you need to recursively split the left and right node until a stop criterion is met.
+# For your reference only. 
+NULL = 0 
+class bsearch(object):
+    '''
+    binary search tree, with public functions of search, insert and traversal
+    '''
+    def __init__ (self, value) :
+        self.value = value
+        self.left = self.right = NULL
+
+    def search(self, value) :
+        if self.value==value :
+            return True 
+        elif self.value>value :
+            if self.left==NULL :
+                return False 
+            else:
+                return self.left.search(value)
+        else :		
+            if self.right==NULL : 
+                return False 
+            else :
+                return self.right.search(value)
+
+    def insert(self, value) :
+        if self.value==value :
+            return False 
+        elif self.value>value :
+            if self.left==NULL :
+                self.left = bsearch(value)
+                return True 
+            else :
+                return self.left.insert(value)
+        else :
+            if self.right==NULL :
+                self.right = bsearch(value)
+                return True 
+            else :
+                return self.right.insert(value)
+
+    def inorder(self)  :
+        if self.left !=NULL  :
+            self.left.inorder()
+        if self != NULL : 
+            print (self.value, " ", end="")
+        if self.right != NULL : 
+            self.right.inorder()
 
 
+# -------------------------------Main code starts here-------------------------------------#
 class TreeNode(object):
     '''
     A class for storing necessary information at each tree node.
@@ -410,7 +461,17 @@ cart = CART(8)
 cart.train(X_train, y_train)
 cart.visualize_tree()
 cart.test(X_train)
+# classX = cart.test(X_train)
+# counter = 0
+# for i in range(len(classX)):
+#     if classX[i] == y_train[i]:
+#         counter+=1
+# print(counter)
 best_depth, best_acc, best_tree = GridSearchCV(X_train, y_train, [1, 40])
+# print(best_depth)
+# print(best_acc)
 print('Best depth from 5-fold cross validation: %d' % best_depth)
 print('Best validation accuracy: %.5f' % (best_acc))
+# print('Best depth from 5-fold cross validation: %d' % best_depth)
+# print('Best validation accuracy: %d' % (best_acc))
  
